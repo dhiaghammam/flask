@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CO2 Emission Recommendations</title>
+</head>
+<body>
+    <h1>CO2 Emission Recommendations</h1>
+    <form action="/recommendations" method="get">
+        <label for="emission_limit">Emission Limit (tons):</label><br>
+        <input type="text" id="emission_limit" name="emission_limit"><br><br>
+        <button type="submit">Get Recommendations</button>
+    </form>
+    <div id="recommendations"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const emissionLimit = document.getElementById('emission_limit').value;
+                const response = await fetch(`/recommendations?emission_limit=${emissionLimit}`);
+                const data = await response.json();
+                const recommendationsDiv = document.getElementById('recommendations');
+                recommendationsDiv.innerHTML = "<h2>Recommendations</h2>";
+                data.forEach(item => {
+                    recommendationsDiv.innerHTML += `<p><strong>Plate Number:</strong> ${item.Plate_Number}, <strong>Type:</strong> ${item.Type}, <strong>CO2 Emission:</strong> ${item.CO2_Emission}</p>`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

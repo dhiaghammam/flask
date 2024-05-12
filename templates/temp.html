@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charges Predictor</title>
+</head>
+<body>
+    <h1>Charges Predictor</h1>
+    <label for="date">Choose a date:</label>
+    <input type="date" id="date" name="date">
+    <button onclick="getCharges()">Get Charges</button>
+    <div id="result"></div>
+
+    <script>
+        function getCharges() {
+            var date = document.getElementById('date').value;
+
+            fetch('/get_charges', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({date: date})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = `On ${data.date}, the charges are ${data.charges}`;
+            });
+        }
+    </script>
+</body>
+</html>

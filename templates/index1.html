@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Loyal Customer</title>
+</head>
+<body>
+    <h1>Predict Loyal Customer</h1>
+    <form id="predictionForm">
+        <label for="Total_requests">Total Requests:</label><br>
+        <input type="text" id="Total_requests" name="Total_requests"><br>
+        <label for="Total_amount">Total Amount:</label><br>
+        <input type="text" id="Total_amount" name="Total_amount"><br><br>
+        <button type="submit">Predict</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        // Function to handle form submission
+        document.getElementById("predictionForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form from submitting and reloading page
+
+            // Get form data
+            var formData = new FormData(this);
+
+            // Send form data to server
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display prediction result
+                document.getElementById("result").innerText = data.prediction_text;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
